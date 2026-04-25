@@ -1,0 +1,1441 @@
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    font-family: var(--font-sans);
+    background: transparent;
+    color: var(--color-text-primary);
+  }
+  .tool {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    min-height: 700px;
+  }
+  .header {
+    padding: 16px 20px 12px;
+    border-bottom: 0.5px solid var(--color-border-tertiary);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .logo {
+    width: 28px;
+    height: 28px;
+    background: var(--color-text-primary);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .logo svg {
+    width: 16px;
+    height: 16px;
+    fill: var(--color-background-primary);
+  }
+  .title {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+  }
+  .subtitle {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+  }
+  .badge {
+    font-size: 11px;
+    padding: 2px 8px;
+    border-radius: 99px;
+    border: 0.5px solid var(--color-border-tertiary);
+    color: var(--color-text-secondary);
+  }
+  .body {
+    display: flex;
+    flex: 1;
+    gap: 0;
+  }
+  .sidebar {
+    width: 200px;
+    min-width: 200px;
+    border-right: 0.5px solid var(--color-border-tertiary);
+    padding: 12px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .sidebar-label {
+    font-size: 11px;
+    color: var(--color-text-tertiary);
+    padding: 4px 8px 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .sc-btn {
+    width: 100%;
+    text-align: left;
+    padding: 7px 10px;
+    border-radius: var(--border-radius-md);
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    line-height: 1.3;
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    transition: background 0.15s;
+  }
+  .sc-btn:hover {
+    background: var(--color-background-secondary);
+  }
+  .sc-btn.active {
+    background: var(--color-background-secondary);
+    color: var(--color-text-primary);
+    font-weight: 500;
+  }
+  .sc-icon {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    margin-top: 1px;
+  }
+  .sc-icon.pipe {
+    background: #e1f5ee;
+    color: #0f6e56;
+  }
+  .sc-icon.mq {
+    background: #e6f1fb;
+    color: #185fa5;
+  }
+  .sc-icon.shm {
+    background: #eeedfe;
+    color: #534ab7;
+  }
+  .sc-icon.warn {
+    background: #faeeda;
+    color: #854f0b;
+  }
+  .sc-icon.err {
+    background: #fcebeb;
+    color: #a32d2d;
+  }
+  .main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    overflow: hidden;
+  }
+  .toolbar {
+    padding: 10px 16px;
+    border-bottom: 0.5px solid var(--color-border-tertiary);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn {
+    padding: 5px 12px;
+    border-radius: var(--border-radius-md);
+    border: 0.5px solid var(--color-border-secondary);
+    background: none;
+    cursor: pointer;
+    font-size: 13px;
+    color: var(--color-text-primary);
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    transition: background 0.15s;
+  }
+  .btn:hover {
+    background: var(--color-background-secondary);
+  }
+  .btn.primary {
+    background: var(--color-text-primary);
+    color: var(--color-background-primary);
+    border-color: transparent;
+  }
+  .btn.primary:hover {
+    opacity: 0.85;
+  }
+  .btn.danger {
+    color: #a32d2d;
+    border-color: #f7c1c1;
+  }
+  .btn:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
+  .speed-row {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: var(--color-text-secondary);
+  }
+  .panels {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    flex: 1;
+    overflow: hidden;
+  }
+  .panel {
+    border-right: 0.5px solid var(--color-border-tertiary);
+    border-bottom: 0.5px solid var(--color-border-tertiary);
+    padding: 12px 14px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .panel:nth-child(even) {
+    border-right: none;
+  }
+  .panel-title {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    flex-shrink: 0;
+  }
+  .proc-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 8px;
+    border-radius: 6px;
+    background: var(--color-background-secondary);
+    border: 0.5px solid var(--color-border-tertiary);
+  }
+  .proc-name {
+    font-size: 12px;
+    font-weight: 500;
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .state-badge {
+    font-size: 10px;
+    padding: 2px 7px;
+    border-radius: 99px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .state-READY {
+    background: #eaf3de;
+    color: #3b6d11;
+  }
+  .state-RUNNING {
+    background: #e1f5ee;
+    color: #0f6e56;
+  }
+  .state-WAITING {
+    background: #faeeda;
+    color: #854f0b;
+  }
+  .state-BLOCKED {
+    background: #fcebeb;
+    color: #a32d2d;
+  }
+  .state-DONE {
+    background: var(--color-background-secondary);
+    color: var(--color-text-tertiary);
+    border: 0.5px solid var(--color-border-tertiary);
+  }
+  .ops-count {
+    font-size: 11px;
+    color: var(--color-text-tertiary);
+    min-width: 28px;
+    text-align: right;
+  }
+  .bar-outer {
+    flex: 1;
+    height: 5px;
+    background: var(--color-background-secondary);
+    border-radius: 99px;
+    overflow: hidden;
+    min-width: 40px;
+  }
+  .bar-inner {
+    height: 100%;
+    border-radius: 99px;
+    transition: width 0.3s;
+  }
+  .bar-green {
+    background: #1d9e75;
+  }
+  .bar-amber {
+    background: #ef9f27;
+  }
+  .bar-red {
+    background: #e24b4a;
+  }
+  .ipc-row {
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+  .ipc-header {
+    padding: 6px 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--color-background-secondary);
+    border-bottom: 0.5px solid var(--color-border-tertiary);
+  }
+  .ipc-name {
+    font-size: 12px;
+    font-weight: 500;
+    flex: 1;
+  }
+  .ipc-fill {
+    font-size: 11px;
+    color: var(--color-text-secondary);
+  }
+  .ipc-body {
+    padding: 8px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .ipc-buf {
+    display: flex;
+    gap: 3px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .buf-item {
+    font-size: 10px;
+    padding: 2px 6px;
+    background: var(--color-background-secondary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: 4px;
+    color: var(--color-text-secondary);
+    max-width: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .buf-item.hot {
+    background: #faeeda;
+    border-color: #fac775;
+    color: #633806;
+  }
+  .ipc-fill-bar {
+    height: 4px;
+    border-radius: 99px;
+    background: var(--color-background-secondary);
+    overflow: hidden;
+    margin-top: 4px;
+  }
+  .ipc-fill-inner {
+    height: 100%;
+    border-radius: 99px;
+    transition: width 0.3s;
+  }
+  .log-area {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .log-entry {
+    font-size: 11px;
+    display: flex;
+    gap: 6px;
+    padding: 3px 0;
+    border-bottom: 0.5px solid var(--color-border-tertiary);
+    line-height: 1.4;
+  }
+  .log-ts {
+    color: var(--color-text-tertiary);
+    white-space: nowrap;
+    font-family: var(--font-mono);
+    font-size: 10px;
+  }
+  .log-pid {
+    font-weight: 500;
+    min-width: 80px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .log-op {
+    min-width: 90px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--color-text-secondary);
+  }
+  .log-op.err {
+    color: #a32d2d;
+  }
+  .log-op.warn {
+    color: #854f0b;
+  }
+  .log-data {
+    color: var(--color-text-tertiary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .issues-area {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .issue-card {
+    border-radius: 6px;
+    padding: 8px 10px;
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    border: 0.5px solid;
+  }
+  .issue-CRITICAL {
+    background: #fcebeb;
+    border-color: #f7c1c1;
+  }
+  .issue-WARNING {
+    background: #faeeda;
+    border-color: #fac775;
+  }
+  .issue-INFO {
+    background: #e6f1fb;
+    border-color: #b5d4f4;
+  }
+  .issue-icon {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .ic-CRITICAL {
+    background: #e24b4a;
+  }
+  .ic-WARNING {
+    background: #ef9f27;
+  }
+  .ic-INFO {
+    background: #378add;
+  }
+  .issue-text {
+    font-size: 12px;
+    flex: 1;
+    color: var(--color-text-primary);
+  }
+  .issue-cat {
+    font-weight: 500;
+    font-size: 11px;
+    margin-bottom: 2px;
+  }
+  .ic-txt-CRITICAL {
+    color: #791f1f;
+  }
+  .ic-txt-WARNING {
+    color: #633806;
+  }
+  .ic-txt-INFO {
+    color: #0c447c;
+  }
+  .issue-pids {
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    margin-top: 2px;
+  }
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .metric-card {
+    background: var(--color-background-secondary);
+    border-radius: var(--border-radius-md);
+    padding: 8px 10px;
+  }
+  .metric-val {
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 1;
+  }
+  .metric-lbl {
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    margin-top: 3px;
+  }
+  .no-issues {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .dot-ok {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #1d9e75;
+    flex-shrink: 0;
+  }
+  .viz-canvas {
+    width: 100%;
+    height: 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .flow-particle {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    top: 50%;
+    margin-top: -3px;
+    transition: none;
+  }
+  .empty-state {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    color: var(--color-text-tertiary);
+    font-size: 13px;
+    padding: 40px;
+  }
+  .scenario-desc {
+    font-size: 12px;
+    color: var(--color-text-secondary);
+    padding: 8px 16px 0;
+    border-top: 0.5px solid var(--color-border-tertiary);
+  }
+  .step-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0;
+    margin-left: 4px;
+  }
+  .overflow-warn {
+    font-size: 10px;
+    color: #a32d2d;
+    font-weight: 500;
+  }
+</style>
+
+<div class="tool">
+  <div class="header">
+    <div class="header-left">
+      <div class="logo">
+        <svg viewBox="0 0 16 16">
+          <path
+            d="M2 4h5v2H2zm7 0h5v2H9zM2 10h5v2H2zm7 0h5v2H9zM7 1v14M1 7h14"
+            stroke="currentColor"
+            stroke-width="1.2"
+            fill="none"
+          />
+        </svg>
+      </div>
+      <div>
+        <div class="title">IPCTrace</div>
+        <div class="subtitle">Inter-Process Communication Debugger</div>
+      </div>
+    </div>
+    <span class="badge" id="status-badge">Ready</span>
+  </div>
+
+  <div class="body">
+    <div class="sidebar">
+      <div class="sidebar-label">Scenarios</div>
+      <button
+        class="sc-btn active"
+        data-sc="pipe_sync"
+        onclick="selectScenario('pipe_sync', this)"
+      >
+        <span class="sc-icon pipe">⇄</span>
+        <span
+          >Pipe sync<br /><span
+            style="
+              font-size: 11px;
+              font-weight: 400;
+              color: var(--color-text-tertiary);
+            "
+            >Clean run</span
+          ></span
+        >
+      </button>
+      <button
+        class="sc-btn"
+        data-sc="msg_queue"
+        onclick="selectScenario('msg_queue', this)"
+      >
+        <span class="sc-icon mq">✉</span>
+        <span
+          >Message queue<br /><span
+            style="
+              font-size: 11px;
+              font-weight: 400;
+              color: var(--color-text-tertiary);
+            "
+            >Normal flow</span
+          ></span
+        >
+      </button>
+      <button
+        class="sc-btn"
+        data-sc="shm_safe"
+        onclick="selectScenario('shm_safe', this)"
+      >
+        <span class="sc-icon shm">⊠</span>
+        <span
+          >Shared memory<br /><span
+            style="
+              font-size: 11px;
+              font-weight: 400;
+              color: var(--color-text-tertiary);
+            "
+            >With mutex</span
+          ></span
+        >
+      </button>
+      <button
+        class="sc-btn"
+        data-sc="race"
+        onclick="selectScenario('race', this)"
+      >
+        <span class="sc-icon warn">⚡</span>
+        <span
+          >Race condition<br /><span
+            style="
+              font-size: 11px;
+              font-weight: 400;
+              color: var(--color-text-tertiary);
+            "
+            >No locking</span
+          ></span
+        >
+      </button>
+      <button
+        class="sc-btn"
+        data-sc="deadlock"
+        onclick="selectScenario('deadlock', this)"
+      >
+        <span class="sc-icon err">⊗</span>
+        <span
+          >Deadlock<br /><span
+            style="
+              font-size: 11px;
+              font-weight: 400;
+              color: var(--color-text-tertiary);
+            "
+            >Circular wait</span
+          ></span
+        >
+      </button>
+      <button
+        class="sc-btn"
+        data-sc="bottleneck"
+        onclick="selectScenario('bottleneck', this)"
+      >
+        <span class="sc-icon warn">↯</span>
+        <span
+          >Bottleneck<br /><span
+            style="
+              font-size: 11px;
+              font-weight: 400;
+              color: var(--color-text-tertiary);
+            "
+            >Queue overflow</span
+          ></span
+        >
+      </button>
+    </div>
+
+    <div class="main">
+      <div class="toolbar">
+        <button class="btn primary" id="run-btn" onclick="runScenario()">
+          ▶ Run
+        </button>
+        <button class="btn" id="step-btn" onclick="stepOnce()" disabled>
+          Step →
+        </button>
+        <button
+          class="btn danger"
+          id="stop-btn"
+          onclick="stopScenario()"
+          disabled
+        >
+          ■ Stop
+        </button>
+        <div class="step-controls">
+          <label
+            style="
+              font-size: 12px;
+              color: var(--color-text-secondary);
+              display: flex;
+              align-items: center;
+              gap: 5px;
+              cursor: pointer;
+            "
+          >
+            <input
+              type="checkbox"
+              id="step-mode-cb"
+              onchange="toggleStepMode(this.checked)"
+              style="cursor: pointer"
+            />
+            Step mode
+          </label>
+        </div>
+        <div class="speed-row">
+          Speed
+          <input
+            type="range"
+            min="1"
+            max="5"
+            value="3"
+            id="speed-slider"
+            style="width: 80px"
+            oninput="updateSpeed(this.value)"
+          />
+          <span id="speed-label">3×</span>
+        </div>
+      </div>
+      <div class="scenario-desc" id="sc-desc">
+        3 producers → shared pipe → 2 consumers. Correctly synchronised —
+        demonstrates clean IPC with no issues.
+      </div>
+
+      <div class="panels">
+        <!-- Process States -->
+        <div class="panel">
+          <div class="panel-title">Process states</div>
+          <div id="proc-list"></div>
+        </div>
+        <!-- IPC Buffers -->
+        <div class="panel">
+          <div class="panel-title">IPC buffers</div>
+          <div id="ipc-list"></div>
+        </div>
+        <!-- Event Log -->
+        <div class="panel">
+          <div class="panel-title">Event log</div>
+          <div class="log-area" id="log-area"></div>
+        </div>
+        <!-- Analysis & Metrics -->
+        <div class="panel">
+          <div class="panel-title">Debugger analysis</div>
+          <div class="issues-area" id="issues-area">
+            <div class="no-issues" style="margin-top: 4px">
+              <span class="dot-ok"></span>Run a scenario to begin analysis
+            </div>
+          </div>
+          <div class="panel-title" style="margin-top: 12px">
+            Performance metrics
+          </div>
+          <div class="metrics-grid" id="metrics-grid">
+            <div class="metric-card">
+              <div class="metric-val" id="m-ops">—</div>
+              <div class="metric-lbl">Total ops</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-val" id="m-tput">—</div>
+              <div class="metric-lbl">Ops / sec</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-val" id="m-err">—</div>
+              <div class="metric-lbl">Errors</div>
+            </div>
+            <div class="metric-card">
+              <div class="metric-val" id="m-blk">—</div>
+              <div class="metric-lbl">Blocks</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const SCENARIOS = {
+    pipe_sync: {
+      desc: "3 producers → shared pipe → 2 consumers. Correctly synchronised — demonstrates clean IPC with no issues.",
+      processes: [
+        { pid: "Producer-A", role: "producer", color: "#1D9E75" },
+        { pid: "Producer-B", role: "producer", color: "#1D9E75" },
+        { pid: "Producer-C", role: "producer", color: "#1D9E75" },
+        { pid: "Consumer-X", role: "consumer", color: "#185FA5" },
+        { pid: "Consumer-Y", role: "consumer", color: "#185FA5" },
+      ],
+      ipc: [{ name: "main_pipe", type: "PIPE", capacity: 8 }],
+      issues: [],
+      genEvents: (t, speed) => {
+        const items = [
+          "packet-1",
+          "packet-2",
+          "packet-3",
+          "data-A",
+          "data-B",
+          "data-C",
+        ];
+        const prods = ["Producer-A", "Producer-B", "Producer-C"];
+        const cons = ["Consumer-X", "Consumer-Y"];
+        const ev = [];
+        for (let i = 0; i < 8; i++) {
+          const p = prods[i % 3],
+            c = cons[i % 2],
+            item = items[i % items.length];
+          ev.push({
+            at: (i * 0.35) / speed,
+            pid: p,
+            ipc: "main_pipe",
+            op: "WRITE",
+            data: item,
+            level: "INFO",
+          });
+          ev.push({
+            at: (i * 0.35) / speed + 0.15 / speed,
+            pid: c,
+            ipc: "main_pipe",
+            op: "READ",
+            data: item,
+            level: "INFO",
+          });
+        }
+        return ev;
+      },
+    },
+    msg_queue: {
+      desc: "2 senders → FIFO message queue → 2 receivers. Balanced throughput, no overflows.",
+      processes: [
+        { pid: "Sender-1", role: "sender", color: "#185FA5" },
+        { pid: "Sender-2", role: "sender", color: "#185FA5" },
+        { pid: "Receiver-1", role: "receiver", color: "#534AB7" },
+        { pid: "Receiver-2", role: "receiver", color: "#534AB7" },
+      ],
+      ipc: [{ name: "task_queue", type: "MQ", capacity: 12 }],
+      issues: [],
+      genEvents: (t, speed) => {
+        const ev = [];
+        for (let i = 0; i < 8; i++) {
+          ev.push({
+            at: (i * 0.4) / speed,
+            pid: "Sender-" + ((i % 2) + 1),
+            ipc: "task_queue",
+            op: "SEND",
+            data: `msg#${i}`,
+            level: "INFO",
+          });
+          ev.push({
+            at: (i * 0.4) / speed + 0.2 / speed,
+            pid: "Receiver-" + ((i % 2) + 1),
+            ipc: "task_queue",
+            op: "RECEIVE",
+            data: `msg#${i}`,
+            level: "INFO",
+          });
+        }
+        return ev;
+      },
+    },
+    shm_safe: {
+      desc: "3 writers (mutex-protected) + 2 readers (semaphore). Demonstrates correct shared memory synchronisation.",
+      processes: [
+        { pid: "Writer-A", role: "writer", color: "#534AB7" },
+        { pid: "Writer-B", role: "writer", color: "#534AB7" },
+        { pid: "Writer-C", role: "writer", color: "#534AB7" },
+        { pid: "Reader-1", role: "reader", color: "#0F6E56" },
+        { pid: "Reader-2", role: "reader", color: "#0F6E56" },
+      ],
+      ipc: [{ name: "shared_counter", type: "SHM", capacity: 1 }],
+      issues: [],
+      genEvents: (t, speed) => {
+        const ev = [];
+        for (let i = 0; i < 8; i++) {
+          ev.push({
+            at: (i * 0.35) / speed,
+            pid: "Writer-" + ["A", "B", "C"][i % 3],
+            ipc: "shared_counter",
+            op: "WRITE[mutex]",
+            data: `ctr=${i * 10}`,
+            level: "INFO",
+          });
+          ev.push({
+            at: (i * 0.35) / speed + 0.1 / speed,
+            pid: "Reader-" + ((i % 2) + 1),
+            ipc: "shared_counter",
+            op: "READ[sem]",
+            data: `ctr=${i * 10}`,
+            level: "INFO",
+          });
+        }
+        return ev;
+      },
+    },
+    race: {
+      desc: "3 threads write shared memory WITHOUT a lock. Data races detected — demonstrates unsafe concurrent access.",
+      processes: [
+        { pid: "Racer-1", role: "writer", color: "#D85A30" },
+        { pid: "Racer-2", role: "writer", color: "#D85A30" },
+        { pid: "Racer-3", role: "writer", color: "#D85A30" },
+        { pid: "Reader-R", role: "reader", color: "#0F6E56" },
+      ],
+      ipc: [{ name: "race_memory", type: "SHM", capacity: 1 }],
+      issues: [
+        {
+          cat: "RACE_CONDITION",
+          sev: "CRITICAL",
+          desc: "Unprotected concurrent writes detected — multiple threads modify shared memory simultaneously without mutex.",
+          pids: ["Racer-1", "Racer-2", "Racer-3"],
+        },
+      ],
+      genEvents: (t, speed) => {
+        const ev = [];
+        for (let i = 0; i < 10; i++) {
+          const r = (i % 3) + 1;
+          ev.push({
+            at: (i * 0.18) / speed,
+            pid: `Racer-${r}`,
+            ipc: "race_memory",
+            op: "UNSAFE_WRITE",
+            data: `val=${Math.floor(Math.random() * 99)}`,
+            level: "ERROR",
+          });
+          if (i % 2 === 0)
+            ev.push({
+              at: (i * 0.18) / speed + 0.05 / speed,
+              pid: "Reader-R",
+              ipc: "race_memory",
+              op: "READ",
+              data: "?corrupt?",
+              level: "WARNING",
+            });
+        }
+        return ev;
+      },
+    },
+    deadlock: {
+      desc: "Two processes hold one lock each and wait for the other's — classic circular wait → deadlock.",
+      processes: [
+        { pid: "DeadProc-A", role: "blocker", color: "#A32D2D" },
+        { pid: "DeadProc-B", role: "blocker", color: "#A32D2D" },
+      ],
+      ipc: [
+        { name: "Resource-LOCK1", type: "SHM", capacity: 1 },
+        { name: "Resource-LOCK2", type: "SHM", capacity: 1 },
+      ],
+      issues: [
+        {
+          cat: "DEADLOCK",
+          sev: "CRITICAL",
+          desc: "Circular resource wait detected. DeadProc-A holds LOCK1 and waits for LOCK2. DeadProc-B holds LOCK2 and waits for LOCK1.",
+          pids: ["DeadProc-A", "DeadProc-B"],
+        },
+      ],
+      genEvents: (t, speed) => {
+        return [
+          {
+            at: 0.1 / speed,
+            pid: "DeadProc-A",
+            ipc: "Resource-LOCK1",
+            op: "LOCK_ACQ",
+            data: "LOCK1",
+            level: "INFO",
+          },
+          {
+            at: 0.2 / speed,
+            pid: "DeadProc-B",
+            ipc: "Resource-LOCK2",
+            op: "LOCK_ACQ",
+            data: "LOCK2",
+            level: "INFO",
+          },
+          {
+            at: 0.5 / speed,
+            pid: "DeadProc-A",
+            ipc: "Resource-LOCK2",
+            op: "MUTEX_WAIT",
+            data: "waiting…",
+            level: "WARNING",
+          },
+          {
+            at: 0.6 / speed,
+            pid: "DeadProc-B",
+            ipc: "Resource-LOCK1",
+            op: "MUTEX_WAIT",
+            data: "waiting…",
+            level: "WARNING",
+          },
+          {
+            at: 2.0 / speed,
+            pid: "DeadProc-A",
+            ipc: "Resource-LOCK2",
+            op: "DEADLOCK_DETECTED",
+            data: "timeout",
+            level: "ERROR",
+          },
+          {
+            at: 2.1 / speed,
+            pid: "DeadProc-B",
+            ipc: "Resource-LOCK1",
+            op: "DEADLOCK_DETECTED",
+            data: "timeout",
+            level: "ERROR",
+          },
+        ];
+      },
+    },
+    bottleneck: {
+      desc: "3 fast senders flood a tiny queue (cap=4) faster than 1 slow receiver drains it → overflow.",
+      processes: [
+        { pid: "FastSender-1", role: "sender", color: "#185FA5" },
+        { pid: "FastSender-2", role: "sender", color: "#185FA5" },
+        { pid: "FastSender-3", role: "sender", color: "#185FA5" },
+        { pid: "SlowReceiver", role: "receiver", color: "#534AB7" },
+      ],
+      ipc: [{ name: "tiny_queue", type: "MQ", capacity: 4 }],
+      issues: [
+        {
+          cat: "BOTTLENECK",
+          sev: "CRITICAL",
+          desc: 'Message queue "tiny_queue" overflowed 7 times. Producer throughput exceeds consumer capacity — messages lost.',
+          pids: ["FastSender-1", "FastSender-2", "FastSender-3"],
+        },
+        {
+          cat: "BOTTLENECK",
+          sev: "WARNING",
+          desc: "SlowReceiver blocked for extended periods. Consumer is the system bottleneck.",
+          pids: ["SlowReceiver"],
+        },
+      ],
+      genEvents: (t, speed) => {
+        const ev = [];
+        for (let i = 0; i < 14; i++) {
+          const s = (i % 3) + 1;
+          const lv = i > 4 ? "ERROR" : "INFO";
+          const op = i > 4 ? "OVERFLOW" : "SEND";
+          ev.push({
+            at: (i * 0.12) / speed,
+            pid: `FastSender-${s}`,
+            ipc: "tiny_queue",
+            op,
+            data: `msg#${i}`,
+            level: lv,
+          });
+        }
+        for (let i = 0; i < 3; i++) {
+          ev.push({
+            at: (i * 1.2) / speed + 0.3 / speed,
+            pid: "SlowReceiver",
+            ipc: "tiny_queue",
+            op: "RECEIVE",
+            data: `msg#${i}`,
+            level: "INFO",
+          });
+        }
+        return ev.sort((a, b) => a.at - b.at);
+      },
+    },
+  };
+
+  let currentSc = "pipe_sync";
+  let simTimer = null;
+  let stepMode = false;
+  let pendingSteps = [];
+  let stepIdx = 0;
+  let running = false;
+  let startTime = 0;
+  let events = [];
+  let speed = 3;
+
+  // Simulation state
+  let procStates = {};
+  let ipcBuffers = {};
+  let logEntries = [];
+  let opCount = 0;
+  let errCount = 0;
+  let blkCount = 0;
+
+  function selectScenario(sc, btn) {
+    if (running) return;
+    document
+      .querySelectorAll(".sc-btn")
+      .forEach((b) => b.classList.remove("active"));
+    btn.classList.add("active");
+    currentSc = sc;
+    resetState();
+    document.getElementById("sc-desc").textContent = SCENARIOS[sc].desc;
+    renderAll();
+  }
+
+  function resetState() {
+    const sc = SCENARIOS[currentSc];
+    procStates = {};
+    ipcBuffers = {};
+    logEntries = [];
+    opCount = 0;
+    errCount = 0;
+    blkCount = 0;
+    sc.processes.forEach((p) => {
+      procStates[p.pid] = {
+        state: "READY",
+        ops: 0,
+        blocked: 0,
+        color: p.color,
+        role: p.role,
+      };
+    });
+    sc.ipc.forEach((i) => {
+      ipcBuffers[i.name] = {
+        type: i.type,
+        cap: i.cap || i.capacity,
+        items: [],
+        overflows: 0,
+      };
+    });
+  }
+
+  function runScenario() {
+    if (running) {
+      stopScenario();
+      return;
+    }
+    resetState();
+    running = true;
+    startTime = Date.now();
+    events = SCENARIOS[currentSc].genEvents(0, speed);
+    stepIdx = 0;
+    pendingSteps = [...events];
+
+    document.getElementById("run-btn").textContent = "⏸ Pause";
+    document.getElementById("stop-btn").disabled = false;
+    document.getElementById("status-badge").textContent = "Running";
+    document.getElementById("step-btn").disabled = !stepMode;
+
+    if (stepMode) {
+      // Start processes as READY
+      Object.keys(procStates).forEach((pid) => {
+        procStates[pid].state = "WAITING";
+      });
+      renderAll();
+    } else {
+      scheduleEvents();
+    }
+  }
+
+  function scheduleEvents() {
+    if (!running) return;
+    const ev = pendingSteps[stepIdx];
+    if (!ev) {
+      finishRun();
+      return;
+    }
+
+    simTimer = setTimeout(
+      () => {
+        processEvent(ev);
+        stepIdx++;
+        scheduleEvents();
+      },
+      ev.at * 1000 - (stepIdx > 0 ? pendingSteps[stepIdx - 1].at * 1000 : 0),
+    );
+  }
+
+  function stepOnce() {
+    if (!running || !stepMode) return;
+    const ev = pendingSteps[stepIdx];
+    if (!ev) {
+      finishRun();
+      return;
+    }
+    processEvent(ev);
+    stepIdx++;
+    if (stepIdx >= pendingSteps.length) finishRun();
+  }
+
+  function processEvent(ev) {
+    const pid = ev.pid;
+    if (!procStates[pid]) return;
+
+    // State transitions
+    const isError = ev.level === "ERROR";
+    const isWarn = ev.level === "WARNING";
+
+    if (
+      ev.op.includes("WAIT") ||
+      ev.op.includes("BLOCKED") ||
+      ev.op === "MUTEX_WAIT"
+    ) {
+      procStates[pid].state = "BLOCKED";
+      procStates[pid].blocked += 1;
+      blkCount++;
+    } else if (ev.op === "DEADLOCK_DETECTED") {
+      procStates[pid].state = "BLOCKED";
+      blkCount++;
+      errCount++;
+    } else if (ev.op === "OVERFLOW") {
+      procStates[pid].state = "RUNNING";
+      if (ipcBuffers[ev.ipc]) ipcBuffers[ev.ipc].overflows++;
+      errCount++;
+      blkCount++;
+    } else {
+      procStates[pid].state = "RUNNING";
+      procStates[pid].ops++;
+      opCount++;
+      if (isError) errCount++;
+
+      // Update buffer
+      const buf = ipcBuffers[ev.ipc];
+      if (buf) {
+        if (ev.op === "WRITE" || ev.op === "SEND" || ev.op.includes("WRITE")) {
+          if (buf.items.length < buf.cap) buf.items.push(ev.data);
+          else buf.overflows++;
+        } else if (ev.op === "READ" || ev.op === "RECEIVE") {
+          if (buf.items.length > 0) buf.items.shift();
+        } else if (ev.op === "LOCK_ACQ") {
+          buf.items = [`LOCKED by ${pid}`];
+        } else if (ev.op === "LOCK_REL") {
+          buf.items = [];
+        }
+      }
+    }
+
+    // Mark others as WAITING if step mode
+    Object.keys(procStates).forEach((p) => {
+      if (p !== pid && procStates[p].state === "RUNNING" && !stepMode) {
+        procStates[p].state = "READY";
+      }
+    });
+
+    // Log it
+    logEntries.unshift({
+      ts: new Date().toLocaleTimeString("en-GB", { hour12: false }),
+      pid,
+      ipc: ev.ipc || "—",
+      op: ev.op,
+      data: ev.data || "",
+      level: ev.level,
+    });
+    if (logEntries.length > 50) logEntries.pop();
+
+    renderAll();
+  }
+
+  function finishRun() {
+    running = false;
+    Object.keys(procStates).forEach((pid) => (procStates[pid].state = "DONE"));
+    document.getElementById("run-btn").textContent = "▶ Run";
+    document.getElementById("stop-btn").disabled = true;
+    document.getElementById("step-btn").disabled = true;
+    document.getElementById("status-badge").textContent = "Done";
+    renderAll();
+  }
+
+  function stopScenario() {
+    clearTimeout(simTimer);
+    running = false;
+    document.getElementById("run-btn").textContent = "▶ Run";
+    document.getElementById("stop-btn").disabled = true;
+    document.getElementById("step-btn").disabled = true;
+    document.getElementById("status-badge").textContent = "Stopped";
+    renderAll();
+  }
+
+  function toggleStepMode(on) {
+    stepMode = on;
+    if (running) {
+      document.getElementById("step-btn").disabled = !on;
+      if (!on) scheduleEvents();
+      else clearTimeout(simTimer);
+    }
+  }
+
+  function updateSpeed(v) {
+    speed = parseInt(v);
+    document.getElementById("speed-label").textContent = v + "×";
+  }
+
+  function renderAll() {
+    renderProcesses();
+    renderBuffers();
+    renderLog();
+    renderIssues();
+    renderMetrics();
+  }
+
+  function renderProcesses() {
+    const sc = SCENARIOS[currentSc];
+    const el = document.getElementById("proc-list");
+    el.innerHTML = "";
+    sc.processes.forEach((p) => {
+      const ps = procStates[p.pid] || { state: "READY", ops: 0, blocked: 0 };
+      const maxOps = 12;
+      const fill = Math.min(ps.ops / maxOps, 1);
+      const barCol =
+        ps.state === "BLOCKED"
+          ? "bar-red"
+          : ps.state === "DONE"
+            ? "bar-green"
+            : fill > 0.6
+              ? "bar-amber"
+              : "bar-green";
+      const row = document.createElement("div");
+      row.className = "proc-row";
+      row.style.marginBottom = "4px";
+      row.innerHTML = `
+      <div class="proc-name" style="color:${p.color}">${p.pid}</div>
+      <div class="bar-outer"><div class="bar-inner ${barCol}" style="width:${fill * 100}%"></div></div>
+      <span class="state-badge state-${ps.state}">${ps.state}</span>
+      <span class="ops-count">${ps.ops} ops</span>
+    `;
+      el.appendChild(row);
+    });
+  }
+
+  function renderBuffers() {
+    const el = document.getElementById("ipc-list");
+    el.innerHTML = "";
+    Object.entries(ipcBuffers).forEach(([name, buf]) => {
+      const fill = buf.items.length / buf.cap;
+      const barCol =
+        fill >= 0.8 ? "#E24B4A" : fill >= 0.5 ? "#EF9F27" : "#1D9E75";
+      const typeColor =
+        { PIPE: "#0F6E56", MQ: "#185FA5", SHM: "#534AB7" }[buf.type] || "#888";
+      const div = document.createElement("div");
+      div.className = "ipc-row";
+      div.style.marginBottom = "6px";
+      let itemsHtml = buf.items
+        .slice(0, 6)
+        .map(
+          (i) => `<span class="buf-item hot">${String(i).slice(0, 12)}</span>`,
+        )
+        .join("");
+      if (buf.items.length > 6)
+        itemsHtml += `<span class="buf-item">+${buf.items.length - 6}</span>`;
+      if (!buf.items.length)
+        itemsHtml = `<span style="font-size:11px;color:var(--color-text-tertiary)">empty</span>`;
+      const ovWarn =
+        buf.overflows > 0
+          ? `<span class="overflow-warn">↯ ${buf.overflows} overflow${buf.overflows > 1 ? "s" : ""}</span>`
+          : "";
+      div.innerHTML = `
+      <div class="ipc-header">
+        <span style="font-size:10px;font-weight:500;color:${typeColor};background:${typeColor}20;padding:1px 6px;border-radius:4px">${buf.type}</span>
+        <span class="ipc-name">${name}</span>
+        <span class="ipc-fill">${buf.items.length}/${buf.cap}</span>
+        ${ovWarn}
+      </div>
+      <div class="ipc-body">
+        <div class="ipc-buf">${itemsHtml}</div>
+        <div class="ipc-fill-bar"><div class="ipc-fill-inner" style="width:${fill * 100}%;background:${barCol}"></div></div>
+      </div>
+    `;
+      el.appendChild(div);
+    });
+  }
+
+  function renderLog() {
+    const el = document.getElementById("log-area");
+    el.innerHTML = "";
+    logEntries.slice(0, 20).forEach((e) => {
+      const isErr = e.level === "ERROR";
+      const isWarn = e.level === "WARNING";
+      const div = document.createElement("div");
+      div.className = "log-entry";
+      div.innerHTML = `
+      <span class="log-ts">${e.ts}</span>
+      <span class="log-pid">${e.pid}</span>
+      <span class="log-op ${isErr ? "err" : isWarn ? "warn" : ""}">${e.op}</span>
+      <span class="log-data">${e.data}</span>
+    `;
+      el.appendChild(div);
+    });
+    if (!logEntries.length) {
+      el.innerHTML =
+        '<span style="font-size:12px;color:var(--color-text-tertiary)">No events yet. Run a scenario.</span>';
+    }
+  }
+
+  function renderIssues() {
+    const el = document.getElementById("issues-area");
+    const sc = SCENARIOS[currentSc];
+    const issues = running || logEntries.length > 0 ? sc.issues : [];
+    el.innerHTML = "";
+
+    // Extra runtime-detected issues from buffer state
+    const runtimeIssues = [];
+    Object.entries(ipcBuffers).forEach(([name, buf]) => {
+      if (buf.overflows > 0 && !issues.find((i) => i.cat === "BOTTLENECK")) {
+        runtimeIssues.push({
+          cat: "BOTTLENECK",
+          sev: "CRITICAL",
+          desc: `"${name}" overflowed ${buf.overflows}×. Messages lost.`,
+          pids: [],
+        });
+      }
+    });
+    const allIssues = [...issues, ...runtimeIssues];
+
+    if (!allIssues.length) {
+      el.innerHTML = `<div class="no-issues"><span class="dot-ok"></span>${logEntries.length ? "No issues detected — clean run." : "Run a scenario to begin analysis."}</div>`;
+      return;
+    }
+    allIssues.forEach((issue) => {
+      const card = document.createElement("div");
+      card.className = `issue-card issue-${issue.sev}`;
+      card.innerHTML = `
+      <div class="issue-icon ic-${issue.sev}"></div>
+      <div class="issue-text">
+        <div class="issue-cat ic-txt-${issue.sev}">${issue.cat.replace(/_/g, " ")}</div>
+        ${issue.desc}
+        ${issue.pids && issue.pids.length ? `<div class="issue-pids">Processes: ${issue.pids.join(", ")}</div>` : ""}
+      </div>
+    `;
+      el.appendChild(card);
+    });
+  }
+
+  function renderMetrics() {
+    const elapsed = (Date.now() - startTime) / 1000 || 1;
+    const tput =
+      running || logEntries.length > 0
+        ? Math.round((opCount / elapsed) * 10) / 10
+        : 0;
+    document.getElementById("m-ops").textContent = opCount || "—";
+    document.getElementById("m-tput").textContent = tput || "—";
+    document.getElementById("m-err").textContent =
+      errCount > 0 ? errCount : logEntries.length ? "0" : "—";
+    document.getElementById("m-blk").textContent =
+      blkCount > 0 ? blkCount : logEntries.length ? "0" : "—";
+
+    // Colour errors red
+    document.getElementById("m-err").style.color =
+      errCount > 0 ? "#A32D2D" : "";
+    document.getElementById("m-blk").style.color =
+      blkCount > 0 ? "#854F0B" : "";
+  }
+
+  // Init
+  resetState();
+  renderAll();
+</script>
