@@ -1405,8 +1405,6 @@
     <!-- /tool -->
 
     <script>
-      // ── ALL ORIGINAL JS LOGIC UNCHANGED ───────────────────────────────────────
-
       const SCENARIOS = {
         pipe_sync: {
           desc: "3 producers → shared pipe → 2 consumers. Correctly synchronised — demonstrates clean IPC with no issues.",
@@ -1436,7 +1434,7 @@
                 c = cons[i % 2],
                 item = items[i % items.length];
               ev.push({
-                at: (i * 0.35) / speed,
+                at: (i * 0.3) / speed,
                 pid: p,
                 ipc: "main_pipe",
                 op: "WRITE",
@@ -1444,7 +1442,7 @@
                 level: "INFO",
               });
               ev.push({
-                at: (i * 0.35) / speed + 0.15 / speed,
+                at: (i * 0.3) / speed + 0.1 / speed,
                 pid: c,
                 ipc: "main_pipe",
                 op: "READ",
@@ -1469,7 +1467,7 @@
             const ev = [];
             for (let i = 0; i < 8; i++) {
               ev.push({
-                at: (i * 0.4) / speed,
+                at: (i * 0.3) / speed,
                 pid: "Sender-" + ((i % 2) + 1),
                 ipc: "task_queue",
                 op: "SEND",
@@ -1477,7 +1475,7 @@
                 level: "INFO",
               });
               ev.push({
-                at: (i * 0.4) / speed + 0.2 / speed,
+                at: (i * 0.3) / speed + 0.1 / speed,
                 pid: "Receiver-" + ((i % 2) + 1),
                 ipc: "task_queue",
                 op: "RECEIVE",
@@ -1503,7 +1501,7 @@
             const ev = [];
             for (let i = 0; i < 8; i++) {
               ev.push({
-                at: (i * 0.35) / speed,
+                at: (i * 0.3) / speed,
                 pid: "Writer-" + ["A", "B", "C"][i % 3],
                 ipc: "shared_counter",
                 op: "WRITE[mutex]",
@@ -1511,7 +1509,7 @@
                 level: "INFO",
               });
               ev.push({
-                at: (i * 0.35) / speed + 0.1 / speed,
+                at: (i * 0.3) / speed + 0.1 / speed,
                 pid: "Reader-" + ((i % 2) + 1),
                 ipc: "shared_counter",
                 op: "READ[sem]",
@@ -1544,7 +1542,7 @@
             for (let i = 0; i < 10; i++) {
               const r = (i % 3) + 1;
               ev.push({
-                at: (i * 0.18) / speed,
+                at: (i * 0.28) / speed,
                 pid: `Racer-${r}`,
                 ipc: "race_memory",
                 op: "UNSAFE_WRITE",
@@ -1553,7 +1551,7 @@
               });
               if (i % 2 === 0)
                 ev.push({
-                  at: (i * 0.18) / speed + 0.05 / speed,
+                  at: (i * 0.28) / speed + 0.1 / speed,
                   pid: "Reader-R",
                   ipc: "race_memory",
                   op: "READ",
@@ -1592,7 +1590,7 @@
               level: "INFO",
             },
             {
-              at: 0.2 / speed,
+              at: 0.4 / speed,
               pid: "DeadProc-B",
               ipc: "Resource-LOCK2",
               op: "LOCK_ACQ",
@@ -1600,7 +1598,7 @@
               level: "INFO",
             },
             {
-              at: 0.5 / speed,
+              at: 0.7 / speed,
               pid: "DeadProc-A",
               ipc: "Resource-LOCK2",
               op: "MUTEX_WAIT",
@@ -1608,7 +1606,7 @@
               level: "WARNING",
             },
             {
-              at: 0.6 / speed,
+              at: 1.0 / speed,
               pid: "DeadProc-B",
               ipc: "Resource-LOCK1",
               op: "MUTEX_WAIT",
@@ -1616,19 +1614,19 @@
               level: "WARNING",
             },
             {
-              at: 2.0 / speed,
+              at: 1.3 / speed,
               pid: "DeadProc-A",
               ipc: "Resource-LOCK2",
               op: "DEADLOCK_DETECTED",
-              data: "timeout",
+              // data: "timeout",
               level: "ERROR",
             },
             {
-              at: 2.1 / speed,
+              at: 1.6 / speed,
               pid: "DeadProc-B",
               ipc: "Resource-LOCK1",
               op: "DEADLOCK_DETECTED",
-              data: "timeout",
+              // data: "timeout",
               level: "ERROR",
             },
           ],
@@ -1663,7 +1661,7 @@
               const lv = i > 4 ? "ERROR" : "INFO";
               const op = i > 4 ? "OVERFLOW" : "SEND";
               ev.push({
-                at: (i * 0.12) / speed,
+                at: (i * 0.25) / speed,
                 pid: `FastSender-${s}`,
                 ipc: "tiny_queue",
                 op,
@@ -1673,7 +1671,7 @@
             }
             for (let i = 0; i < 3; i++) {
               ev.push({
-                at: (i * 1.2) / speed + 0.3 / speed,
+                at: (i * 0.8) / speed + 0.3 / speed,
                 pid: "SlowReceiver",
                 ipc: "tiny_queue",
                 op: "RECEIVE",
@@ -2094,3 +2092,4 @@
     </script>
   </body>
 </html>
+
